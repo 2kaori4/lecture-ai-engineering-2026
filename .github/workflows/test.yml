@@ -1,0 +1,17 @@
+name: test
+
+# README の記載どおり、PR と main への push ごとにテストを実行する。
+# fork では Actions タブで一度有効化が必要。APIキーは不要（LLM を呼ばない TestModel を使用）。
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
+      - run: uv run pytest -q
