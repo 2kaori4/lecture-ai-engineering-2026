@@ -32,6 +32,60 @@ uv run python -m app.ask "LoRAとは何ですか？"
 
 詳しい手順は [lectures/01/problem.md](lectures/01/problem.md) を見てください。
 
+## 環境構築・実行・保存の手順
+
+### 動作要件
+
+| 項目 | 内容 |
+|---|---|
+| Python | 3.12（`.python-version` と `pyproject.toml` の `requires-python >= 3.12`） |
+| パッケージ管理 | [uv](https://docs.astral.sh/uv/) |
+| 依存ライブラリ | `google-genai==2.31.0`、`pydantic-ai-slim[google,mcp]==2.57.0`、開発用に `pytest>=8`（版は `uv.lock` で固定） |
+| 環境変数 | `GEMINI_API_KEY`（必須。LLM を呼ぶ場合のみ）、`AIE_MODEL`（任意） |
+
+### 環境構築
+
+- **Codespaces**：作成すると `.devcontainer/` の設定で Python 3.12・uv・Node.js が入り、`uv sync --frozen` まで自動で実行されます。
+- **自分の PC**：
+
+```bash
+git clone https://github.com/<あなたのユーザー名>/lecture-ai-engineering-2026.git
+cd lecture-ai-engineering-2026
+uv sync --frozen                 # .venv を作り、固定された版をインストール
+export GEMINI_API_KEY="..."      # LLM を呼ぶときだけ必要（コードやコミットに書かない）
+```
+
+### 実行
+
+```bash
+uv run pytest -q                                   # テスト（APIキー不要）
+uv run python -m app.ask "LoRAとは何ですか？"        # 第1回（要 GEMINI_API_KEY）
+uv run python -m app.agent --list-tools            # 第3回：ツール一覧（APIキー不要）
+uv run python -m app.agent --mcp --list-tools      # 第5回：MCP のツール一覧（APIキー不要）
+```
+
+第2回は Google Colab で行います（[lectures/02/problem.md](lectures/02/problem.md)）。
+
+### 保存（提出）
+
+作業内容は Codespaces のコンテナ内にあるだけでは、削除されると失われます。回ごとに **commit して自分の fork に push** してください。
+
+```bash
+git switch -c lecNN              # 回ごとの作業ブランチ
+git add -A && git commit -m "第N回 演習"
+git push -u origin lecNN
+```
+
+PR は **自分の fork の `lecNN` → 自分の fork の `main`** で作成します。PR 画面で base repository が自分の fork になっていることを必ず確認してください（講座 repo に出さない）。
+
+### よくあるエラー
+
+| 症状 | 対処 |
+|---|---|
+| `環境変数 GEMINI_API_KEY が見つかりません` | Codespaces secret を登録（対象 repository に自分の fork を選ぶ）し、Codespaces を再起動 |
+| `レート制限に達しました` | 1 分ほど待つ |
+| `uv sync --frozen` が失敗する | `uv.lock` を書き換えていないか確認。Python 3.12 を使っているか `uv run python --version` で確認 |
+
 ## 構成
 
 ```
