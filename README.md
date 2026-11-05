@@ -78,6 +78,17 @@ git push -u origin lecNN
 
 PR は **自分の fork の `lecNN` → 自分の fork の `main`** で作成します。PR 画面で base repository が自分の fork になっていることを必ず確認してください（講座 repo に出さない）。
 
+> **注意**：fork の画面から PR を作ると、base repository が講座 repo（`matsuolab/...`）になっていることがあります。次のどちらかで、base を確実に自分の fork にしてください。
+>
+> 1. **専用 URL を開く**（base が自分の fork に固定されます）。`<ユーザー名>` と `lecNN` を置き換えます。
+>    `https://github.com/<ユーザー名>/lecture-ai-engineering-2026/compare/main...lecNN?expand=1`
+> 2. **スクリプトを使う**：push と PR 作成を、base 固定で行います。
+>    ```bash
+>    bash scripts/submit_pr.sh "第N回 演習"
+>    ```
+>
+> 画面で作る場合は、PR 作成画面上部の「base repository」が自分の fork か、確認してから Create します。
+
 ### よくあるエラー
 
 | 症状 | 対処 |
